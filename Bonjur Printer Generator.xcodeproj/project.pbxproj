@@ -11,6 +11,10 @@
 		234A490128F4802900B5994A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234A490028F4802900B5994A /* ContentView.swift */; };
 		234A490328F4802A00B5994A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 234A490228F4802A00B5994A /* Assets.xcassets */; };
 		234A490728F4802A00B5994A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 234A490628F4802A00B5994A /* Preview Assets.xcassets */; };
+		234A491128F480D100B5994A /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234A490E28F480D100B5994A /* Connectivity.swift */; };
+		234A491228F480D100B5994A /* BonjurServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234A490F28F480D100B5994A /* BonjurServer.swift */; };
+		234A491328F480D100B5994A /* NetPrinterFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234A491028F480D100B5994A /* NetPrinterFinder.swift */; };
+		234A491528F56B4900B5994A /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234A491428F56B4900B5994A /* ContentViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +24,10 @@
 		234A490228F4802A00B5994A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		234A490428F4802A00B5994A /* Bonjur_Printer_Generator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bonjur_Printer_Generator.entitlements; sourceTree = "<group>"; };
 		234A490628F4802A00B5994A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		234A490E28F480D100B5994A /* Connectivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
+		234A490F28F480D100B5994A /* BonjurServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BonjurServer.swift; sourceTree = "<group>"; };
+		234A491028F480D100B5994A /* NetPrinterFinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetPrinterFinder.swift; sourceTree = "<group>"; };
+		234A491428F56B4900B5994A /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,8 +60,10 @@
 		234A48FD28F4802900B5994A /* Bonjur Printer Generator */ = {
 			isa = PBXGroup;
 			children = (
+				234A490D28F480AF00B5994A /* core */,
 				234A48FE28F4802900B5994A /* Bonjur_Printer_GeneratorApp.swift */,
 				234A490028F4802900B5994A /* ContentView.swift */,
+				234A491428F56B4900B5994A /* ContentViewModel.swift */,
 				234A490228F4802A00B5994A /* Assets.xcassets */,
 				234A490428F4802A00B5994A /* Bonjur_Printer_Generator.entitlements */,
 				234A490528F4802A00B5994A /* Preview Content */,
@@ -67,6 +77,16 @@
 				234A490628F4802A00B5994A /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		234A490D28F480AF00B5994A /* core */ = {
+			isa = PBXGroup;
+			children = (
+				234A490F28F480D100B5994A /* BonjurServer.swift */,
+				234A490E28F480D100B5994A /* Connectivity.swift */,
+				234A491028F480D100B5994A /* NetPrinterFinder.swift */,
+			);
+			path = core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,8 +159,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				234A491228F480D100B5994A /* BonjurServer.swift in Sources */,
 				234A490128F4802900B5994A /* ContentView.swift in Sources */,
+				234A491528F56B4900B5994A /* ContentViewModel.swift in Sources */,
 				234A48FF28F4802900B5994A /* Bonjur_Printer_GeneratorApp.swift in Sources */,
+				234A491128F480D100B5994A /* Connectivity.swift in Sources */,
+				234A491328F480D100B5994A /* NetPrinterFinder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +293,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Bonjur printer emulator";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -287,10 +312,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.thinprint.cloudprinter--com.thinprint.cloudprinter--com.thinprint.cloudprinter--com.thinprint.cloudprinter.Bonjur-Printer-Generator";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -307,6 +333,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Bonjur printer emulator";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -325,10 +352,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.thinprint.cloudprinter--com.thinprint.cloudprinter--com.thinprint.cloudprinter--com.thinprint.cloudprinter.Bonjur-Printer-Generator";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
