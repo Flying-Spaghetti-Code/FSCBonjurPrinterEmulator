@@ -13,7 +13,6 @@
 		234A490728F4802A00B5994A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 234A490628F4802A00B5994A /* Preview Assets.xcassets */; };
 		234A491128F480D100B5994A /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234A490E28F480D100B5994A /* Connectivity.swift */; };
 		234A491228F480D100B5994A /* BonjurServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234A490F28F480D100B5994A /* BonjurServer.swift */; };
-		234A491328F480D100B5994A /* NetPrinterFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234A491028F480D100B5994A /* NetPrinterFinder.swift */; };
 		234A491528F56B4900B5994A /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234A491428F56B4900B5994A /* ContentViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -26,7 +25,6 @@
 		234A490628F4802A00B5994A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		234A490E28F480D100B5994A /* Connectivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
 		234A490F28F480D100B5994A /* BonjurServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BonjurServer.swift; sourceTree = "<group>"; };
-		234A491028F480D100B5994A /* NetPrinterFinder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetPrinterFinder.swift; sourceTree = "<group>"; };
 		234A491428F56B4900B5994A /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,7 +82,6 @@
 			children = (
 				234A490F28F480D100B5994A /* BonjurServer.swift */,
 				234A490E28F480D100B5994A /* Connectivity.swift */,
-				234A491028F480D100B5994A /* NetPrinterFinder.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -164,7 +161,6 @@
 				234A491528F56B4900B5994A /* ContentViewModel.swift in Sources */,
 				234A48FF28F4802900B5994A /* Bonjur_Printer_GeneratorApp.swift in Sources */,
 				234A491128F480D100B5994A /* Connectivity.swift in Sources */,
-				234A491328F480D100B5994A /* NetPrinterFinder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
