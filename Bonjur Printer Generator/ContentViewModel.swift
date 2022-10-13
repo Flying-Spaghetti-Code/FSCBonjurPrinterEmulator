@@ -24,17 +24,28 @@ class ContentViewModel: ObservableObject {
         servers.append(server)
     }
     
-    func didTapRemove() {
-        
+    func didTapRemove(_ server: BonjourServer) {
+        if let index = servers.firstIndex(of: server) {
+            server.stop()
+            servers.remove(at: index)
+        }
     }
     
     func didTapStartAll() {
-        
-        
+        for server in servers {
+            server.run()
+        }
     }
     
-    func didTapStop() {
-        
+    func didTapStopAll() {
+        for server in servers {
+            server.stop()
+        }
+    }
+    
+    func didTapClear() {
+        didTapStopAll()
+        servers.removeAll()
     }
     
 }

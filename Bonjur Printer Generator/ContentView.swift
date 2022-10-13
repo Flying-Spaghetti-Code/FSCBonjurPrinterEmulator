@@ -27,11 +27,24 @@ struct ContentView: View {
         GroupBox(label: Text("Printer list").font(.title)) {
             List(viewModel.servers, id: \.hashValue){server in
                 ServerCellView(server: server)
-                
-            }.listStyle(.inset(alternatesRowBackgrounds: true))
-            
+                    .contextMenu {
+                        Button("Delete",  action: {viewModel.didTapRemove(server)})
+                    }
+            }
         }
         .padding()
+        HStack{
+            Button("Clear", action: viewModel.didTapClear)
+                .padding()
+                .disabled(viewModel.servers.isEmpty)
+            Button("Start all", action: viewModel.didTapStartAll)
+                .padding()
+                .disabled(viewModel.servers.isEmpty)
+            Button("Stop All", action: viewModel.didTapStopAll)
+                .padding()
+                .disabled(viewModel.servers.isEmpty)
+            
+        }
     }
 }
 
@@ -39,34 +52,41 @@ struct ContentView: View {
 struct ServerCellView : View {
     @ObservedObject var server: BonjourServer
     var body: some View {
-        HStack {
-            Image(systemName: "printer.fill")
-                .padding(10) // Width of the border
-                .background(Color.blue) // Color of the border
-                .cornerRadius(8) // Outer corner radius
-                .padding()
-            VStack(alignment: .leading,spacing: 3 ) {
-                Text(server.name)
-                    .font(.title3)
-                Text("Manufacturer: \(server.manifacturer) - Model: \(server.model) ")
-                    .font(.caption)
-                    
-                
-                HStack(alignment: .center, spacing: 3) {
-                    Text("•")
-                        .font(.title)
-                        .foregroundColor(server.status.color)
-                    
-                    Text(server.status.description)
+        VStack{
+            HStack {
+                Image(systemName: "printer.fill")
+                    .padding(10)
+                    .background(Color.blue)
+                    .cornerRadius(8)
+                    .padding()
+                VStack(alignment: .leading,spacing: 3 ) {
+                    Text(server.name)
+                        .font(.title3)
+                    Text("Manufacturer: \(server.manifacturer) - Model: \(server.model) ")
                         .font(.caption)
-                    Spacer()
-                    Toggle("start", isOn: $server.isRunning )
                         
-                }.padding(.top, -8)
-                Divider()
+                    
+                    HStack(alignment: .center, spacing: 3) {
+                        Text("•")
+                            .font(.title)
+                            .foregroundColor(server.status.color)
+                        
+                        Text(server.status.description)
+                            .font(.caption)
+                        
+                            
+                    }.padding(.top, -8)
+                    
+                }
+                Spacer()
+                Toggle( server.isRunning ? "Stop" : "Start", isOn: $server.isRunning )
+                    .toggleStyle(.button)
+                
                 
             }
+            Divider()
         }
+        
     }
 }
 
