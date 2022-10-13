@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var viewModel = ContentViewModel()
     var body: some View {
-        GroupBox(label: Text("Simulated printers")) {
+        GroupBox(label: Text("Add a ptinter").font(.title)) {
             VStack {
                 TextField("Printer name", text: $viewModel.name)
                     .padding(.top)
@@ -24,10 +24,11 @@ struct ContentView: View {
             }.padding()
         }
         .padding()
-        GroupBox(label: Text("Printer list")) {
+        GroupBox(label: Text("Printer list").font(.title)) {
             List(viewModel.servers, id: \.hashValue){server in
                 ServerCellView(server: server)
-            }
+                
+            }.listStyle(.inset(alternatesRowBackgrounds: true))
             
         }
         .padding()
@@ -36,14 +37,35 @@ struct ContentView: View {
 
 
 struct ServerCellView : View {
-    var server: BonjourServer
+    @ObservedObject var server: BonjourServer
     var body: some View {
         HStack {
             Image(systemName: "printer.fill")
-//                .cornerRadius(7)
-                .padding(8) // Width of the border
+                .padding(10) // Width of the border
                 .background(Color.blue) // Color of the border
                 .cornerRadius(8) // Outer corner radius
+                .padding()
+            VStack(alignment: .leading,spacing: 3 ) {
+                Text(server.name)
+                    .font(.title3)
+                Text("Manufacturer: \(server.manifacturer) - Model: \(server.model) ")
+                    .font(.caption)
+                    
+                
+                HStack(alignment: .center, spacing: 3) {
+                    Text("•")
+                        .font(.title)
+                        .foregroundColor(server.status.color)
+                    
+                    Text(server.status.description)
+                        .font(.caption)
+                    Spacer()
+                    Toggle("start", isOn: $server.isRunning )
+                        
+                }.padding(.top, -8)
+                Divider()
+                
+            }
         }
     }
 }
