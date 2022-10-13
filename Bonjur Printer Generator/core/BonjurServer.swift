@@ -1,7 +1,8 @@
 import Foundation
+import SwiftUI
 
-public var usedPorts : [Int] = []
-
+public var usedPorts : [Int32] = []
+public var basePort: Int32 = 9100
 
 protocol BonjourServerRequestDelegate {
     func bonjourServerRequestDidFinish(_ request: BonjourServerRequest)
@@ -126,8 +127,27 @@ extension Data {
     }
 }
 
-
-
+public enum ServerStatus{
+    case running(port: Int32)
+    case stopped
+    case error(description: String)
+    
+    var description: String {
+        switch self {
+            case .running(let port): return "running, port: \(port)"
+            case .stopped: return "stopped"
+            case .error(let description): return "error (\(description))"
+        }
+    }
+    
+    var color: Color {
+        switch self {
+            case .running: return .green
+            case .stopped: return .red
+            case .error: return .orange
+        }
+    }
+}
 
 public class BonjourServer: NSObject, BonjourServerRequestDelegate, NetServiceDelegate, ObservableObject{
     var connectionBag: Set<BonjourServerRequest> = []
@@ -136,14 +156,20 @@ public class BonjourServer: NSObject, BonjourServerRequestDelegate, NetServiceDe
     var name: String
     var manifacturer: String
     var model: String
-    var port: Int32 = 9100
+    var port: Int32 = basePort
+    var isRunning = false {
+        didSet {
+            isRunning ? run() : teardown()
+        }
+    }
     
-    
+    @Published var status: ServerStatus
     
     public  init( name: String, manifacturer: String, model: String) {
         self.name = name
         self.manifacturer = manifacturer
         self.model = model
+        self.status = .stopped
         super.init()
     }
     
@@ -157,6 +183,9 @@ public class BonjourServer: NSObject, BonjourServerRequestDelegate, NetServiceDe
     }
     public func netService(_ sender: NetService, didNotPublish errorDict: [String: NSNumber]) {
         print(errorDict.description)
+        DispatchQueue.main.async{
+            self.status = .error(description: errorDict.description)
+        }
     }
     
     public func netService(_ sender: NetService, didAcceptConnectionWith readStream: InputStream, outputStream writeStream: OutputStream) {
@@ -191,15 +220,29 @@ public class BonjourServer: NSObject, BonjourServerRequestDelegate, NetServiceDe
         }
     }
     
-    public func run(port: Int32 = 9100) {
+    public func run() {
+        findFreePort()
         do {
             try self.setupServer(port, name, manifacturer, model)
+            status = .running(port: port)
         } catch let thisError as NSError {
-            fatalError(thisError.localizedDescription)
+            status = .error(description: thisError.localizedDescription)
         }
         
         print(#function)
         self.netService!.publish(options: .listenForConnections)
+    }
+    
+    private func findFreePort(){
+        // stupid algorithm at the moment please improve it
+        
+        port = basePort
+        
+        while usedPorts.contains(port) {
+            port += 1
+        }
+        
+        usedPorts.append(port)
     }
     
     func handleConnection(_ peerName: String?, inputStream readStream: InputStream, outputStream writeStream: OutputStream) {
@@ -226,9 +269,13 @@ public class BonjourServer: NSObject, BonjourServerRequestDelegate, NetServiceDe
     }
     
     public func teardown() {
+        
+        usedPorts = usedPorts.filter {$0 != port}
+        
         if self.netService != nil {
             self.netService!.stop()
             self.netService = nil
+            self.status = .stopped
         }
     }
     
