@@ -10,40 +10,44 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var viewModel = ContentViewModel()
     var body: some View {
-        GroupBox(label: Text("Add a ptinter").font(.title)) {
-            VStack {
-                TextField("Printer name", text: $viewModel.name)
-                    .padding(.top)
-                TextField("Manufacturer", text: $viewModel.manufacturer)
-                    .padding(.top)
-                TextField("Model", text: $viewModel.model)
-                    .padding(.vertical)
-                Button("Add in list", action: viewModel.didTapAdd)
-                    .padding()
-                    .disabled(viewModel.addingDisabled)
-            }.padding()
-        }
-        .padding()
-        GroupBox(label: Text("Printer list").font(.title)) {
-            List(viewModel.servers, id: \.hashValue){server in
-                ServerCellView(server: server)
-                    .contextMenu {
-                        Button("Delete",  action: {viewModel.didTapRemove(server)})
-                    }
+        VStack{
+            GroupBox(label: Text("Add a printer").font(.title)) {
+                VStack {
+                    TextField("Printer name", text: $viewModel.name)
+                        .padding(.top)
+                    TextField("Manufacturer", text: $viewModel.manufacturer)
+                        .padding(.top)
+                    TextField("Model", text: $viewModel.model)
+                        .padding(.vertical)
+                    Button("Add in list", action: viewModel.didTapAdd)
+                        .padding()
+                        .disabled(viewModel.addingDisabled)
+                }.padding()
             }
-        }
-        .padding()
-        HStack{
-            Button("Clear", action: viewModel.didTapClear)
-                .padding()
-                .disabled(viewModel.servers.isEmpty)
-            Button("Start all", action: viewModel.didTapStartAll)
-                .padding()
-                .disabled(viewModel.servers.isEmpty)
-            Button("Stop All", action: viewModel.didTapStopAll)
-                .padding()
-                .disabled(viewModel.servers.isEmpty)
-            
+            .padding()
+            GroupBox(label: Text("Printer list").font(.title)) {
+                List(viewModel.servers, id: \.hashValue){server in
+                    ServerCellView(server: server)
+                        .contextMenu {
+                            Button("Delete",  action: {viewModel.didTapRemove(server)})
+                        }
+                }
+            }
+            .padding()
+            .frame(minWidth: 600,  minHeight: 200)
+            HStack{
+                Button("Clear", action: viewModel.didTapClear)
+                    .padding()
+                    .disabled(viewModel.servers.isEmpty)
+                Button("Start all", action: viewModel.didTapStartAll)
+                    .padding()
+                    .disabled(viewModel.servers.isEmpty)
+                Button("Stop All", action: viewModel.didTapStopAll)
+                    .padding()
+                    .disabled(viewModel.servers.isEmpty)
+                
+            }
+            .frame(minHeight: 80)
         }
     }
 }
