@@ -66,7 +66,8 @@ struct ServerCellView : View {
                 VStack(alignment: .leading,spacing: 3 ) {
                     Text(server.name)
                         .font(.title3)
-                    Text("Manufacturer: \(server.manifacturer) - Model: \(server.model) ")
+                    Text(
+                        "Manufacturer: \(server.manifacturer.isEmpty ? "[EMPTY!]" : server.manifacturer) - Model: \(server.model.isEmpty ? "[EMPTY!]" : server.model) ")
                         .font(.caption)
                         
                     

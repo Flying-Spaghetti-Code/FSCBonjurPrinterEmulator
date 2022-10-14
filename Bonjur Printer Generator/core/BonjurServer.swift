@@ -68,7 +68,16 @@ public class BonjourServer: NSObject, NetServiceDelegate, ObservableObject{
         } else {
             
             self.netService = NetService(domain: "local", type: "_pdl-datastream._tcp.", name: name, port: port )
-            let dict = ["usb_MFG":manifacturer.data(using: .utf8)!,"usb_MDL":model.data(using: .utf8)!]
+            var dict: [String:Data] = [:]
+            
+            if !manifacturer.isEmpty {
+                dict["usb_MFG"] = manifacturer.data(using: .utf8)!
+            }
+            
+            if !model.isEmpty {
+                dict["usb_MDL"] = model.data(using: .utf8)!
+            }
+            
             let txtData = NetService.data(fromTXTRecord: dict)
             netService?.setTXTRecord(txtData)
             

@@ -16,7 +16,7 @@ class ContentViewModel: ObservableObject {
     @Published var model: String = ""
     
     var addingDisabled : Bool {
-        name.isEmpty || manufacturer.isEmpty || model.isEmpty
+        name.isEmpty 
     }
     
     func didTapAdd() {
