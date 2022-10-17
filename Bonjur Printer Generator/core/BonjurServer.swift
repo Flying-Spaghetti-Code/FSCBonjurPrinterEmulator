@@ -31,7 +31,7 @@ public class BonjourServer: NSObject, NetServiceDelegate, ObservableObject{
     var netService: NetService?
     
     var name: String
-    var manifacturer: String
+    var manufacturer: String
     var model: String
     var port: Int32 = basePort
     var isRunning = false {
@@ -42,9 +42,9 @@ public class BonjourServer: NSObject, NetServiceDelegate, ObservableObject{
     
     @Published var status: ServerStatus
     
-    public  init( name: String, manifacturer: String, model: String) {
+    public  init( name: String, manufacturer: String, model: String) {
         self.name = name
-        self.manifacturer = manifacturer
+        self.manufacturer = manufacturer
         self.model = model
         self.status = .stopped
         super.init()
@@ -93,7 +93,7 @@ public class BonjourServer: NSObject, NetServiceDelegate, ObservableObject{
     public func run() {
         findFreePort()
         do {
-            try self.setupServer(port, name, manifacturer, model)
+            try self.setupServer(port, name, manufacturer, model)
             status = .running(port: port)
         } catch let thisError as NSError {
             status = .error(description: thisError.localizedDescription)

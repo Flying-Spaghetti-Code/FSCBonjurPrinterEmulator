@@ -20,7 +20,7 @@ class ContentViewModel: ObservableObject {
     }
     
     func didTapAdd() {
-        let server = BonjourServer(name: name, manifacturer: manufacturer, model: model)
+        let server = BonjourServer(name: name, manufacturer: manufacturer, model: model)
         servers.append(server)
     }
     
@@ -41,6 +41,14 @@ class ContentViewModel: ObservableObject {
         for server in servers {
             server.stop()
         }
+    }
+    
+    func didTapLoad(_ url: URL?) {
+        
+    }
+    
+    func didTapSave(_ url: URL?) {
+        
     }
     
     func didTapClear() {

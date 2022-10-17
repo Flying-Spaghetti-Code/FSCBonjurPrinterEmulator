@@ -11,21 +11,64 @@ struct ContentView: View {
     @ObservedObject var viewModel = ContentViewModel()
     var body: some View {
         VStack{
-            GroupBox(label: Text("Add a printer").font(.title)) {
-                VStack {
-                    TextField("Printer name", text: $viewModel.name)
+            
+            HStack{
+                
+                GroupBox(label: Text("Add a printer manually").font(.title)) {
+                    VStack {
+                        TextField("Printer name", text: $viewModel.name)
+                        
+                        TextField("Manufacturer", text: $viewModel.manufacturer)
+                        
+                        TextField("Model", text: $viewModel.model)
+                        
+                        Button(action: viewModel.didTapAdd){
+                            Label("Add in list", systemImage: "rectangle.stack.badge.plus")
+                        }
                         .padding(.top)
-                    TextField("Manufacturer", text: $viewModel.manufacturer)
-                        .padding(.top)
-                    TextField("Model", text: $viewModel.model)
-                        .padding(.vertical)
-                    Button("Add in list", action: viewModel.didTapAdd)
-                        .padding()
                         .disabled(viewModel.addingDisabled)
-                }.padding()
+                    }.padding()
+                }
+                
             }
             .padding()
+            
             GroupBox(label: Text("Printer list").font(.title)) {
+                HStack(spacing: 5){
+                    Spacer()
+                    Button(action: {
+                        let url = showOpenPanel()
+                        viewModel.didTapLoad(url)
+                    }){
+                        Label("Open", systemImage: "square.and.arrow.up")
+                    }
+                    
+                    
+                    Button(action: {
+                        let url = showSavePanel()
+                        viewModel.didTapSave(url)
+                    }){
+                        Label("Save", systemImage: "square.and.arrow.down")
+                    }
+                    .disabled(viewModel.servers.isEmpty)
+                    
+                    Button(action: viewModel.didTapClear){
+                        Label("Clear", systemImage: "trash")
+                    }
+                    .disabled(viewModel.servers.isEmpty)
+                    
+                    Button(action: viewModel.didTapStartAll){
+                        Label("Start all", systemImage: "play.fill")
+                    }
+                    .disabled(viewModel.servers.isEmpty)
+                    
+                    Button(action: viewModel.didTapStopAll){
+                        Label("Stop all", systemImage: "stop.fill")
+                    }
+                    .disabled(viewModel.servers.isEmpty)
+                    
+                }
+                .buttonStyle(.bordered)
                 List(viewModel.servers, id: \.hashValue){server in
                     ServerCellView(server: server)
                         .contextMenu {
@@ -35,20 +78,31 @@ struct ContentView: View {
             }
             .padding()
             .frame(minWidth: 600,  minHeight: 200)
-            HStack{
-                Button("Clear", action: viewModel.didTapClear)
-                    .padding()
-                    .disabled(viewModel.servers.isEmpty)
-                Button("Start all", action: viewModel.didTapStartAll)
-                    .padding()
-                    .disabled(viewModel.servers.isEmpty)
-                Button("Stop All", action: viewModel.didTapStopAll)
-                    .padding()
-                    .disabled(viewModel.servers.isEmpty)
-                
-            }
-            .frame(minHeight: 80)
         }
+    }
+    
+    func showSavePanel() -> URL? {
+        let savePanel = NSSavePanel()
+        savePanel.allowedContentTypes = [.json]
+        savePanel.canCreateDirectories = true
+        savePanel.isExtensionHidden = false
+        savePanel.allowsOtherFileTypes = false
+        savePanel.title = "Save the printer list"
+        savePanel.message = "Choose a folder and a name to store the list"
+        savePanel.nameFieldLabel = "File name:"
+        let response = savePanel.runModal()
+        return response == .OK ? savePanel.url : nil
+    }
+    
+    
+    func showOpenPanel() -> URL? {
+        let openPanel = NSOpenPanel()
+        openPanel.allowedContentTypes = [.json]
+        openPanel.allowsMultipleSelection = false
+        openPanel.canChooseDirectories = false
+        openPanel.canChooseFiles = true
+        let response = openPanel.runModal()
+        return response == .OK ? openPanel.url : nil
     }
 }
 
@@ -67,10 +121,8 @@ struct ServerCellView : View {
                     Text(server.name)
                         .font(.title3)
                     Text(
-                        "Manufacturer: \(server.manifacturer.isEmpty ? "[EMPTY!]" : server.manifacturer) - Model: \(server.model.isEmpty ? "[EMPTY!]" : server.model) ")
+                        "Manufacturer: \(server.manufacturer.isEmpty ? "[EMPTY!]" : server.manufacturer) - Model: \(server.model.isEmpty ? "[EMPTY!]" : server.model) ")
                         .font(.caption)
-                        
-                    
                     HStack(alignment: .center, spacing: 3) {
                         Text("•")
                             .font(.title)
@@ -78,8 +130,6 @@ struct ServerCellView : View {
                         
                         Text(server.status.description)
                             .font(.caption)
-                        
-                            
                     }.padding(.top, -8)
                     
                 }
