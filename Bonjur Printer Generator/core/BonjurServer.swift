@@ -30,9 +30,7 @@ public class BonjourServer: NSObject, NetServiceDelegate, ObservableObject{
     
     var netService: NetService?
     
-    var name: String
-    var manufacturer: String
-    var model: String
+    var printer: Printer
     var port: Int32 = basePort
     var isRunning = false {
         didSet {
@@ -42,10 +40,8 @@ public class BonjourServer: NSObject, NetServiceDelegate, ObservableObject{
     
     @Published var status: ServerStatus
     
-    public  init( name: String, manufacturer: String, model: String) {
-        self.name = name
-        self.manufacturer = manufacturer
-        self.model = model
+    public init(_ printer: Printer) {
+        self.printer = printer
         self.status = .stopped
         super.init()
     }
@@ -60,21 +56,21 @@ public class BonjourServer: NSObject, NetServiceDelegate, ObservableObject{
         }
     }
     
-    func setupServer(_ port: Int32,_ name: String,_ manifacturer: String,_ model: String) throws {
+    private func setupServer(_ port: Int32) throws {
         
         if self.netService != nil {
             // Calling run() more than once should be a NOP.
             return
         } else {
             
-            self.netService = NetService(domain: "local", type: "_pdl-datastream._tcp.", name: name, port: port )
+            self.netService = NetService(domain: "local", type: "_pdl-datastream._tcp.", name: printer.name, port: port )
             var dict: [String:Data] = [:]
             
-            if !manifacturer.isEmpty {
-                dict["usb_MFG"] = manifacturer.data(using: .utf8)!
+            if let manufacturer = printer.manufacturer, !manufacturer.isEmpty {
+                dict["usb_MFG"] = manufacturer.data(using: .utf8)!
             }
             
-            if !model.isEmpty {
+            if  let model = printer.model, !model.isEmpty {
                 dict["usb_MDL"] = model.data(using: .utf8)!
             }
             
@@ -93,7 +89,7 @@ public class BonjourServer: NSObject, NetServiceDelegate, ObservableObject{
     public func run() {
         findFreePort()
         do {
-            try self.setupServer(port, name, manufacturer, model)
+            try self.setupServer(port)
             status = .running(port: port)
         } catch let thisError as NSError {
             status = .error(description: thisError.localizedDescription)

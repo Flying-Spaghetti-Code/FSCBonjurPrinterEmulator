@@ -20,7 +20,8 @@ class ContentViewModel: ObservableObject {
     }
     
     func didTapAdd() {
-        let server = BonjourServer(name: name, manufacturer: manufacturer, model: model)
+        let printer = Printer(name: name, manufacturer: manufacturer, model: model)
+        let server = BonjourServer(printer)
         servers.append(server)
     }
     
@@ -43,12 +44,22 @@ class ContentViewModel: ObservableObject {
         }
     }
     
-    func didTapLoad(_ url: URL?) {
-        
+    func didTapLoad(_ url: URL) {
+        do {
+            let list = try [Printer](from: url)
+            servers = list.map{ BonjourServer($0)}
+        } catch let error {
+            print("error on loading from file \(error.localizedDescription)")
+        }
     }
     
-    func didTapSave(_ url: URL?) {
-        
+    func didTapSave(_ url: URL) {
+        let printers = servers.map { $0.printer }
+        do {
+            try printers.save(to: url)
+        }catch let error {
+            print("error on saving \(error.localizedDescription)")
+        }
     }
     
     func didTapClear() {

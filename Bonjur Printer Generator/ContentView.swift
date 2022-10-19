@@ -37,7 +37,7 @@ struct ContentView: View {
                 HStack(spacing: 5){
                     Spacer()
                     Button(action: {
-                        let url = showOpenPanel()
+                        guard let url = showOpenPanel() else {return}
                         viewModel.didTapLoad(url)
                     }){
                         Label("Open", systemImage: "square.and.arrow.up")
@@ -45,7 +45,7 @@ struct ContentView: View {
                     
                     
                     Button(action: {
-                        let url = showSavePanel()
+                        guard let url = showSavePanel() else {return}
                         viewModel.didTapSave(url)
                     }){
                         Label("Save", systemImage: "square.and.arrow.down")
@@ -118,10 +118,10 @@ struct ServerCellView : View {
                     .cornerRadius(8)
                     .padding()
                 VStack(alignment: .leading,spacing: 3 ) {
-                    Text(server.name)
+                    Text(server.printer.name)
                         .font(.title3)
                     Text(
-                        "Manufacturer: \(server.manufacturer.isEmpty ? "[EMPTY!]" : server.manufacturer) - Model: \(server.model.isEmpty ? "[EMPTY!]" : server.model) ")
+                        "Manufacturer: \(server.printer.manufacturerText) - Model: \(server.printer.modelText) ")
                         .font(.caption)
                     HStack(alignment: .center, spacing: 3) {
                         Text("•")
