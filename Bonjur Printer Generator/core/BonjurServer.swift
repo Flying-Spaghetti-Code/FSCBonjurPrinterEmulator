@@ -34,7 +34,7 @@ public class BonjourServer: NSObject, NetServiceDelegate, ObservableObject{
     var port: Int32 = basePort
     var isRunning = false {
         didSet {
-            isRunning ? run() : teardown()
+            isRunning ? start() : teardown()
         }
     }
     
@@ -86,7 +86,7 @@ public class BonjourServer: NSObject, NetServiceDelegate, ObservableObject{
         }
     }
     
-    public func run() {
+    private func start() {
         findFreePort()
         do {
             try self.setupServer(port)
@@ -113,6 +113,10 @@ public class BonjourServer: NSObject, NetServiceDelegate, ObservableObject{
     
     public func stop() {
         isRunning = false
+    }
+    
+    public func run() {
+        isRunning = true
     }
     
     private func teardown() {
