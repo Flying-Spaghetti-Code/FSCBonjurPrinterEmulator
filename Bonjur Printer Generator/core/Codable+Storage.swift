@@ -26,7 +26,7 @@ extension Encodable {
     
     private var jsonStr: String? {
         
-        var jsonEncoder = JSONEncoder()
+        let jsonEncoder = JSONEncoder()
         jsonEncoder.outputFormatting = .prettyPrinted
         
         guard
