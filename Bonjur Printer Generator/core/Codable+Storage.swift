@@ -26,8 +26,11 @@ extension Encodable {
     
     private var jsonStr: String? {
         
+        var jsonEncoder = JSONEncoder()
+        jsonEncoder.outputFormatting = .prettyPrinted
+        
         guard
-            let jsonData = try? JSONEncoder().encode(self),
+            let jsonData = try? jsonEncoder.encode(self),
             let jsonString = String(data: jsonData, encoding: .utf8)
         else {
             return nil
