@@ -37,7 +37,7 @@ struct ContentView: View {
                 HStack(spacing: 5){
                     Spacer()
                     Button(action: {
-                        guard let url = showOpenPanel() else {return}
+                        guard let url = viewModel.showOpenPanel() else {return}
                         viewModel.didTapLoad(url)
                     }){
                         Label("Open", systemImage: "square.and.arrow.up")
@@ -45,7 +45,7 @@ struct ContentView: View {
                     
                     
                     Button(action: {
-                        guard let url = showSavePanel() else {return}
+                        guard let url = viewModel.showSavePanel() else {return}
                         viewModel.didTapSave(url)
                     }){
                         Label("Save", systemImage: "square.and.arrow.down")
@@ -79,30 +79,6 @@ struct ContentView: View {
             .padding()
             .frame(minWidth: 600,  minHeight: 200)
         }
-    }
-    
-    func showSavePanel() -> URL? {
-        let savePanel = NSSavePanel()
-        savePanel.allowedContentTypes = [.json]
-        savePanel.canCreateDirectories = true
-        savePanel.isExtensionHidden = false
-        savePanel.allowsOtherFileTypes = false
-        savePanel.title = "Save the printer list"
-        savePanel.message = "Choose a folder and a name to store the list"
-        savePanel.nameFieldLabel = "File name:"
-        let response = savePanel.runModal()
-        return response == .OK ? savePanel.url : nil
-    }
-    
-    
-    func showOpenPanel() -> URL? {
-        let openPanel = NSOpenPanel()
-        openPanel.allowedContentTypes = [.json]
-        openPanel.allowsMultipleSelection = false
-        openPanel.canChooseDirectories = false
-        openPanel.canChooseFiles = true
-        let response = openPanel.runModal()
-        return response == .OK ? openPanel.url : nil
     }
 }
 

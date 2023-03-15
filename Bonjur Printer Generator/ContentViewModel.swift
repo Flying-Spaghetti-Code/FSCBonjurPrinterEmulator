@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import AppKit
 
 
 class ContentViewModel: ObservableObject {
@@ -65,6 +65,30 @@ class ContentViewModel: ObservableObject {
     func didTapClear() {
         didTapStopAll()
         servers.removeAll()
+    }
+    
+    func showSavePanel() -> URL? {
+        let savePanel = NSSavePanel()
+        savePanel.allowedContentTypes = [.json]
+        savePanel.canCreateDirectories = true
+        savePanel.isExtensionHidden = false
+        savePanel.allowsOtherFileTypes = false
+        savePanel.title = "Save the printer list"
+        savePanel.message = "Choose a folder and a name to store the list"
+        savePanel.nameFieldLabel = "File name:"
+        let response = savePanel.runModal()
+        return response == .OK ? savePanel.url : nil
+    }
+    
+    
+    func showOpenPanel() -> URL? {
+        let openPanel = NSOpenPanel()
+        openPanel.allowedContentTypes = [.json]
+        openPanel.allowsMultipleSelection = false
+        openPanel.canChooseDirectories = false
+        openPanel.canChooseFiles = true
+        let response = openPanel.runModal()
+        return response == .OK ? openPanel.url : nil
     }
     
 }
