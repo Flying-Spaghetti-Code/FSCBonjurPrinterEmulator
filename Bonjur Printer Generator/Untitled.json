@@ -1,0 +1,20 @@
+[
+  {
+    "name" : "HP OfficeJet R45",
+    "manufacturer" : "HP",
+    "model" : "OfficeJet R45"
+  },
+  {
+    "name" : "HP No match",
+    "manufacturer" : "HP",
+    "model" : "No match"
+  },
+  {
+    "name" : "Ugly Manufacturer pro",
+    "manufacturer" : "Ugly Manufacturer",
+    "model" : "pro"
+  },
+  {
+    "name" : "Empty fields"
+  }
+]
